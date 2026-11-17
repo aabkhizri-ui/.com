@@ -279,6 +279,25 @@ $("changeBtn").addEventListener("click", () => {
   currentUser.pass = newP;
   setMsg($("changeMsg"), "Password badal gaya.", true);
 });
+// HASH ROUTING: each role has its own link, all in one site.
+// index.html#admin  index.html#user  index.html#employer  index.html#booker  index.html#shopkeeper
+const HASH_ROUTES = {
+  "admin": "admin",
+  "user": "user",
+  "employer": "employer",
+  "booker": "order_booker",
+  "order-booker": "order_booker",
+  "shopkeeper": "shopkeeper"
+};
+function openFromHash() {
+  const key = (location.hash || "").replace("#", "").trim().toLowerCase();
+  const role = HASH_ROUTES[key];
+  if (!role) return;
+  const btn = document.querySelector('.role-btn[data-role="' + role + '"]');
+  if (btn) btn.click();
+}
+window.addEventListener("hashchange", openFromHash);
+openFromHash();
 </script>
 </body>
 </html>

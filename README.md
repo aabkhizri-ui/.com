@@ -33,3 +33,12 @@ Admin = A, User = U, Employer = E. Order Booker and Shopkeeper have no letter.
 1. Create Supabase project, run schema.sql.
 2. Share Project URL and anon key.
 3. Remove demo accounts.
+
+
+## Direct links (hash routes)
+- index.html#admin: Admin login
+- index.html#user: User login
+- index.html#employer: Employer login
+- index.html#booker: Order Booker login
+- index.html#shopkeeper: Shopkeeper login
+All links open inside the same site and share the same app.
