@@ -31,9 +31,24 @@ input::placeholder { color: #8a96a6; }
 .pill.active { background: #c9a86a; color: #111827; }
 .list-item { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 10px 12px; margin-top: 8px; font-size: 13px; color: #cfd8e3; }
 .small { font-size: 12px; color: #cfd8e3; }
+
+/* DARK / LIGHT MODE */
+#themeBtn { position: fixed; top: 10px; right: 10px; z-index: 20; background: #1e3a6e; color: #ffffff; border: 1px solid #c9a86a; border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+body.light { background: #f4f6fa; color: #111827; }
+body.light .card { background: #ffffff; color: #111827; }
+body.light .role-btn, body.light .list-item { background: #f1f4f9; color: #111827; border-color: #cbd5e1; }
+body.light input { background: #ffffff; color: #111827; border-color: #94a3b8; }
+body.light input::placeholder { color: #6b7280; }
+body.light label, body.light .small { color: #374151; }
+body.light .link { color: #7a5a1f; }
+body.light .btn.ghost { color: #111827; border-color: #94a3b8; }
+body.light .logo { background: #ffffff; }
+body.light .msg { color: #b91c1c; }
+body.light .msg.ok { color: #15803d; }
 </style>
 </head>
 <body>
+<button id="themeBtn">Light</button>
 <div class="wrap">
 
   <!-- ROLE SELECT -->
@@ -90,9 +105,9 @@ input::placeholder { color: #8a96a6; }
       </div>
       <button class="btn ghost" id="homeMenuBtn" style="width:auto; margin:0; padding:6px 12px;">Menu</button>
     </div>
-    <div class="pill-row" id="pillRow"></div>
     <div class="card" id="homeContent"></div>
     <div id="menuPanel" class="card hidden">
+      <div class="pill-row" id="pillRow"></div>
       <div class="list-item" data-act="change">Password badlein</div>
       <div class="list-item" data-act="logout">Logout</div>
     </div>
@@ -172,26 +187,48 @@ $("backRoles1").addEventListener("click", () => show("screenRoles"));
 $("forgotLink").addEventListener("click", () => { $("forgotId").value = ""; $("forgotNew").value = ""; setMsg($("forgotMsg"), ""); show("screenForgot"); });
 $("backLogin1").addEventListener("click", () => show("screenLogin"));
 
-// LOGIN
-$("loginBtn").addEventListener("click", () => {
+// SUPABASE CONNECTION (publishable key is safe to be public)
+const SB_URL = "https://ddccndpknwjxppylrjkm.supabase.co";
+const SB_KEY = "sb_publishable_f59FQL-7C0YvS0bQ6MvyUQ_VZjH26q4";
+async function rpc(name, body) {
+  const r = await fetch(SB_URL + "/rest/v1/rpc/" + name, {
+    method: "POST",
+    headers: { "apikey": SB_KEY, "Authorization": "Bearer " + SB_KEY, "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error("rpc " + r.status);
+  return r.json();
+}
+
+// LOGIN (real database)
+$("loginBtn").addEventListener("click", async () => {
   const id = $("loginId").value.trim();
   const pass = $("loginPass").value;
-  const found = (DEMO_USERS[currentRole] || []).find(u => u.key === id && u.pass === pass);
-  if (!found) { setMsg($("loginMsg"), "ID ya password galat hai"); return; }
-  currentUser = found;
-  openHome();
+  if (!id || !pass) { setMsg($("loginMsg"), "ID aur password dono bharein"); return; }
+  setMsg($("loginMsg"), "Check ho raha hai...", true);
+  try {
+    const user = await rpc("app_login", { p_id: id, p_pass: pass });
+    if (!user || user.role !== currentRole) { setMsg($("loginMsg"), "ID ya password galat hai"); return; }
+    currentUser = { key: user.login_id, name: user.name, des: user.designation, pass: pass, role: user.role };
+    setMsg($("loginMsg"), "");
+    openHome();
+  } catch (e) {
+    setMsg($("loginMsg"), "Connection mein masla hai, dobara koshish karein");
+  }
 });
 
-// FORGOT PASSWORD: request goes to admin approval, no SMS
-const RESET_REQUESTS = [];
-$("forgotBtn").addEventListener("click", () => {
+// FORGOT PASSWORD: request goes to admin approval (no SMS)
+$("forgotBtn").addEventListener("click", async () => {
   const id = $("forgotId").value.trim();
   const np = $("forgotNew").value;
-  const found = (DEMO_USERS[currentRole] || []).find(u => u.key === id);
-  if (!found) { setMsg($("forgotMsg"), "Ye ID mili nahi"); return; }
-  if (np.length < 6) { setMsg($("forgotMsg"), "Password kam az kam 6 characters ka ho"); return; }
-  RESET_REQUESTS.push({ role: currentRole, user: found, newPass: np, status: "pending" });
-  setMsg($("forgotMsg"), "Request admin ko bheji gayi hai. Approval ke baad login kar sakte hain.", true);
+  if (!id || !np) { setMsg($("forgotMsg"), "ID aur naya password dono bharein"); return; }
+  try {
+    const ok = await rpc("app_request_reset", { p_id: id, p_new: np });
+    if (ok) setMsg($("forgotMsg"), "Request admin ko bhej di gayi hai. Approval ke baad login karein.", true);
+    else setMsg($("forgotMsg"), "ID nahi mili, ya password 6 characters se chhota hai");
+  } catch (e) {
+    setMsg($("forgotMsg"), "Connection mein masla hai, dobara koshish karein");
+  }
 });
 
 // HOME
@@ -208,6 +245,7 @@ function openHome() {
     p.addEventListener("click", () => {
       row.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
       p.classList.add("active");
+      $("menuPanel").classList.add("hidden");
       renderSection(label);
     });
     row.appendChild(p);
@@ -217,7 +255,7 @@ function openHome() {
   show("screenHome");
 }
 
-function renderSection(label) {
+async function renderSection(label) {
   const box = $("homeContent");
   box.textContent = "";
   if (currentRole === "admin" && label === "Approval") {
@@ -226,31 +264,39 @@ function renderSection(label) {
     title.style.color = "#ffffff";
     title.textContent = "Password reset requests";
     box.appendChild(title);
-    const pending = RESET_REQUESTS.filter(r => r.status === "pending");
-    if (pending.length === 0) {
+    let list = [];
+    try {
+      list = await rpc("app_list_resets", { p_admin_id: currentUser.key, p_admin_pass: currentUser.pass }) || [];
+    } catch (e) {
+      const err = document.createElement("div");
+      err.className = "msg";
+      err.textContent = "Connection mein masla hai";
+      box.appendChild(err);
+      return;
+    }
+    if (list.length === 0) {
       const none = document.createElement("div");
       none.className = "small";
       none.textContent = "Abhi koi request nahi hai.";
       box.appendChild(none);
       return;
     }
-    pending.forEach(r => {
+    list.forEach(r => {
       const item = document.createElement("div");
       item.className = "list-item";
-      item.textContent = ROLE_LABEL[r.role] + " | ID: " + r.user.key + " | Naam: " + r.user.name;
+      item.textContent = (r.role || "") + " | ID: " + r.login_id + " | Naam: " + r.name;
       const ok = document.createElement("button");
       ok.className = "btn";
       ok.textContent = "Approve";
-      ok.addEventListener("click", () => {
-        r.user.pass = r.newPass;
-        r.status = "approved";
+      ok.addEventListener("click", async () => {
+        await rpc("app_decide_reset", { p_admin_id: currentUser.key, p_admin_pass: currentUser.pass, p_request_id: r.request_id, p_approve: true });
         renderSection("Approval");
       });
       const no = document.createElement("button");
       no.className = "btn ghost";
       no.textContent = "Reject";
-      no.addEventListener("click", () => {
-        r.status = "rejected";
+      no.addEventListener("click", async () => {
+        await rpc("app_decide_reset", { p_admin_id: currentUser.key, p_admin_pass: currentUser.pass, p_request_id: r.request_id, p_approve: false });
         renderSection("Approval");
       });
       item.appendChild(ok);
@@ -270,34 +316,27 @@ $("menuPanel").addEventListener("click", e => {
 });
 $("backHome").addEventListener("click", () => openHome());
 
-// CHANGE PASSWORD
-$("changeBtn").addEventListener("click", () => {
+// CHANGE PASSWORD (real database)
+$("changeBtn").addEventListener("click", async () => {
   const oldP = $("oldPass").value;
   const newP = $("newPass").value;
-  if (oldP !== currentUser.pass) { setMsg($("changeMsg"), "Purana password galat hai"); return; }
-  if (newP.length < 6) { setMsg($("changeMsg"), "Naya password kam az kam 6 characters ka ho"); return; }
-  currentUser.pass = newP;
-  setMsg($("changeMsg"), "Password badal gaya.", true);
+  try {
+    const ok = await rpc("app_change_password", { p_id: currentUser.key, p_old: oldP, p_new: newP });
+    if (ok) { currentUser.pass = newP; setMsg($("changeMsg"), "Password badal gaya.", true); }
+    else setMsg($("changeMsg"), "Purana password galat hai, ya naya 6 characters se chhota hai");
+  } catch (e) {
+    setMsg($("changeMsg"), "Connection mein masla hai, dobara koshish karein");
+  }
 });
-// HASH ROUTING: each role has its own link, all in one site.
-// index.html#admin  index.html#user  index.html#employer  index.html#booker  index.html#shopkeeper
-const HASH_ROUTES = {
-  "admin": "admin",
-  "user": "user",
-  "employer": "employer",
-  "booker": "order_booker",
-  "order-booker": "order_booker",
-  "shopkeeper": "shopkeeper"
-};
-function openFromHash() {
-  const key = (location.hash || "").replace("#", "").trim().toLowerCase();
-  const role = HASH_ROUTES[key];
-  if (!role) return;
-  const btn = document.querySelector('.role-btn[data-role="' + role + '"]');
-  if (btn) btn.click();
+
+// DARK / LIGHT MODE
+const themeBtn = document.getElementById("themeBtn");
+function applyTheme(light) {
+  document.body.classList.toggle("light", light);
+  themeBtn.textContent = light ? "Dark" : "Light";
 }
-window.addEventListener("hashchange", openFromHash);
-openFromHash();
+themeBtn.addEventListener("click", () => applyTheme(!document.body.classList.contains("light")));
+applyTheme(false);
 </script>
 </body>
 </html>
