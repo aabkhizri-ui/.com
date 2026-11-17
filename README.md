@@ -1,0 +1,25 @@
+# Aab-e-Khizri (v1 build)
+
+## Files
+- app.html: role select, five logins (Admin, User, Employer, Order Booker, Shopkeeper), forgot password, change password, role home screens with menu tabs. Demo mode, no database yet.
+- admin_panel_v1.html: earlier admin panel page (login, main bar, sidebar, account number demo).
+- logo.png: your logo, used unchanged on all screens.
+- schema.sql: Supabase tables (run in SQL Editor).
+
+## Demo accounts (remove before going live)
+- Admin: admin001 / admin123
+- User: user001 / user123
+- Employer: emp001 / emp123
+- Order Booker: booker001 / book123
+- Shopkeeper: 03001234567 / shop123
+
+## Not done yet
+- Supabase connection (Auth, forgot password by email/SMS, real data).
+- Row Level Security policies per role.
+- Screens inside each tab (orders, approvals, dispatch, printing, attendance, KPIs, tokens, shop registration, product images).
+- Print slips, offline mode (PWA), token claim flow.
+
+## Going live
+1. Create Supabase project, run schema.sql.
+2. Share Project URL and anon key.
+3. Remove demo accounts.
