@@ -1,0 +1,175 @@
+AAB-E-KHIZRI v9.8  (naya server)
+================================
+Server: Supabase project "aab-khizri" (pxbqszxpbreyxtsnslrw). Tables/functions pehle se bane hue hain,
+SQL chalane ki zaroorat NAHI. (token_approval.sql aur registration_approval.sql ab shamil nahi, server mein andar hain.)
+
+1) Is folder ki SAARI files (aur .github folder bhi) GitHub repo mein upload karein, purani files replace karein.
+2) GitHub > Actions > keep-server-awake > Run workflow  (ek baar). Isse server pause nahi hoga.
+3) App kholein, neeche "Aab-e-Khizri . v9.8" dikhe. Admin login: ID S.S.S
+
+Token approval: shopkeeper review > admin "Token approval" > Approve (tokens ki ginti badal sakte hain) > tokens milte hain.
+
+v9.8 mein naya: shopkeeper ka chhota fixed header (logo + Order/My Orders/Tokens + menu), logo par tap = search,
+5 minute login, admin menu mein Tokens/Discounts, printing slip admin Settings mein editable (aur website orders ki printing),
+app khulte hi 4 second logo, chat notifications aur auto-reply.
+v9.8: Admin Settings mein "Offer ticker" - shopkeeper page par product ke upar chalti hui offer ki patti (text, direction, speed, colors admin set karta hai).
+v9.8: photo upload mein background khud hat jata hai (sirf bottle), video ab chalti hai (CSP mein media-src add), video ki white background invisible.
+v9.8: video ka background bhi khud hat jata hai (mask se), photo jaisa.
+v9.8: version label theek (footer v9.8), video background removal aur mazboot + admin ko status paigham, "What is new" popup.
+v9.9: opening logo par tap se skip; admin video background on/off; server/diagnose.sql (website order error, AI chatbot aur push ke liye pehle ye chalayen).
+v9.10: Admin mein naya "📈 Dashboard" tab (tokens jari/istemal/baqi, ₨ value, top dukandar, redemption rate, discount ginti).
+v9.10: Promo ke din sirf 5 se 10 (dropdown). Discount list mein dukandar ka naam dukan list se bhi dikhta hai (agar naam na ho to #number).
+v9.10: Dukandar ko approved discount ke saath promo ki muddat (ps/pe) dikhti hai — server ko ye fields bhejni hongi (neeche SQL note).
+v9.11: Admin mein 🎬 Videos tab: bottle/promo video (order page par bottle ki jagah) aur bundle packing video (Place your order ke upar). Bucket aab-media, 30 MB tak, mp4/webm/mov.
+v9.11: Admin mein 🤖 AI tab (read-only): live sales, dukandar, discount aur tokens ke sawal. Edge Function "admin-ai" use karta hai.
+v9.11 SETUP: Supabase > Edge Functions > Secrets mein ANTHROPIC_API_KEY add karein, phir AI tab kaam karega.
+v9.11: CSP mein media-src mein Supabase storage allow kiya.
+v9.12: Chat auto-reply ab server par, sirf EK dafa (Walaikum Assalam), phir tab tak nahi jab tak user/admin reply na kare.
+v9.13: Chat auto-reply: pehla message par greeting (ek dafa); uske baad har message par "team masroof hai" reply, jab tak user/admin reply na kare.
+v9.14: Admin 📈 Dashboard naye design mein: pastel KPI cards, tokens bar chart, redemption donut, 14 din ki sale line, leaderboard aur discount cards.
+v9.15: Admin 📈 Dashboard poora naye sire se: upar live date aur time, scorecard tiles, pastel shopkeeper cards, sales line chart, navy donut, tokens bar chart, is mahine ka calendar, discount cards aur leaderboard.
+v9.16: Admin Dashboard ab main bar mein. Purana 📊 Dashboard aur 🤖 AI hata diye. Date range select karke aaya/gaya/bana, sale, tokens aur din-ba-din table dekhein. Auto-chat active hai.
+v9.17: Dashboard: city/state filter, date range, aur har card/bar/dukandar/din par click karke poori list khulti hai (orders, tokens, balance).
+v9.19: Video aur picture ke liye zoom, crop, IN/OUT cut aur background removal (promo, pack, bottle photo). Dashboard mein Previous/Next se agli cheez khulti hai.
+v9.20: Video aur photo ka real crop (upload se pehle). Photo par promo banner (tap = order form). Dashboard: pichle muddat se comparison, funnel aur insight.
+v9.21: Chat bubbles: jo hum bhejein wo ek side par, jo doosra bheje wo dusri side par (server field "sender" ke mutabiq).
+v9.22: Dashboard ka naam "Khoobsurat Dashboard" (🌸). Naya city-wise sales map: shehar ki bubble par tap karke pura dashboard us shehar par filter hota hai.
+v9.23: Admin 🔘 Buttons tab: promo buttons banaye, edit, hide/show, delete. Customer page par rangeen buttons (order form, page top, ya https link). Date se start/end.
+
+v10.0: Customer header: bigger logo fills the empty left space beside Menu and the 3 buttons. Version now 10.0 (next: 10.01, 10.02 ...).
+
+v11.0: Website video upload now saves the video first and removes the background as a separate step (so the video always appears). Live refresh every 30 s in the app; website live sales, tokens and contact. Shopkeeper sales (booked and sold) and token table on every tab. Website footer shows the version.
+
+v11.0 (fixes): auto-reply now replies at once in English and Urdu (Walaikum Assalam; team contacts within 1 hour; after 1 hour "surely soon"). Admin gets chat notifications (asks permission on first tap). Customers get a notification when a token request changes. Old embedded website code removed. Website video background mask uploads now allowed by storage policy.
+
+v11.0 (reset + tracker): all data cleared except the admin login; website tracking shown as a route-map with stops (received, approved, dispatched, on the way, delivered), also on order confirmation.
+
+v11.0 (prices and tokens): admin Website price tab (rate, bottles per bundle, tax, delivery) updates the website and the order calculation; token settings no longer reset to the 10-bundle default while editing; shopkeepers see the website price; save messages confirm.
+
+v11.01: Every uploaded video (website bottle, promo, packing) gets its background removed automatically, and the admin chooses the crop before upload. The shape is kept exactly as cropped (portrait or landscape). Crop and background mask are applied on playback in the app and on the website. Version label now 11.01.
+
+v11.01 (update): customer IDs start at 100; order progress shows all stages in one line (New, Waiting for approval, Approved, Dispatch, Shipping, On the way, Delivered); website shows live rates, bundle size, delivery, tokens and new-customer offer; website live-update functions restored; all data cleared except admin.
+
+v11.01 (discounts): a discount given to a customer and the new-customer offer are fixed for one full year; they cannot be lowered, switched off or removed before the year ends (the server enforces this). The admin sees a clear message when a change is blocked.
+
+v11.01 (new-customer offer): admin sets a percentage and the first N new customers (0 = no limit). Each new customer gets the discount automatically on approval. When N customers have received it the offer ends automatically. The website shows the offer and how many are left.
+
+v11.01 (shopkeeper): every delivered order shows its 7-day delivery deadline (overdue is highlighted). After delivery the shopkeeper uploads the bill photo with a message; tokens are added only after the bill photo is uploaded. Claims: the admin switches them on or off in the new Claims tab; when on, shopkeepers submit a claim with a photo, the number of bottles, a reason (leakage, second expiry, third leak, other) and a note; the admin approves or rejects with a note.
+
+v11.01 (pricing and areas): base rate 250, 12 bottles per bundle with 4 free, bulk 240+ bottles at 200 (app). Customer discount period is one year from the day it was given. Claim reasons: bottle leakage, secondary expiry, mouse cut. Order form has a village/area list per city (editable by admin in Villages & areas). Website price tab has free bottles.
+
+v11.01 (places): cities, villages and areas come from the places list (11 cities, 141 entries). Choose a city, then its villages/areas/cities appear, then type the house address. Kamalia added to the city list. The admin edits the list in Cities, villages and areas.
+
+v11.02: The default bottle video is removed. The website shows the bottle video only after the admin uploads one. Version 11.02.
+
+v11.02 (fixes): bill and claim photos open the live camera. Admin action failures show the real reason (token approval now explains a missing bill photo) instead of "Wrong ID or password", which now appears only on the login screen.
+
+v11.02 (bills): the delivery bill photo and message now reach the admin (order cards and the token review) and the shopkeeper sees it received. The admin sees when a bill has not arrived yet.
+
+v10.05 (variant 11.05): all activity data cleared; accounts (customers, shopkeepers, admin, user) and settings kept. Admin verifies the delivery bill (Verify / Not valid) before tokens can be approved. Website price tab holds the bundle-to-token table. Website order shows the tokens for the chosen bundles.
+
+Website offer: 12 bottles per bundle with 4 free (all website text updated, DB price bundle 12, free 4).
+
+Logo updated everywhere: app header and login, website, print slip, app icons (all roles), banners and videos. New logo has a transparent background.
+
+Role names: the home-screen name and page title show Aab-e-Khizri for customers, Aab-e-Khizri User for users, and Aab-e-Khizri Admin for the admin. The install button shows the role name.
+
+Logo: white background, clean circle, used everywhere.
+
+Website offer is 6 bottles + 2 free per bundle (website text, calculator and website video). The shopkeeper app and video keep 12 + 4.
+
+Shop directory (phase 1): admin sets each shop name, city, village/area, photo and Show flag in the Shops tab. The website shows "Shops near you" for the chosen city and area, nearest area first. Phone numbers are never shown on the website.
+
+Shops and logos: registration asks for the shop name, city and village/area (with the photo the form already takes). The admin approval card shows the shop name first. On approval the shop details move to the shopkeeper account; the admin turns Show on the website in the Shops tab. Admin and user logos are uploaded in the Logos tab with the white background removed. The website lists the shops for the chosen city and area, nearest first, without phone numbers.
+
+Nearest shops: the website asks the visitor for location once. The nearest shops (by the location taken at registration) are shown with the distance; if location is not allowed, the chosen city and area are used. Phone numbers are never shown.
+
+Shop cards open the map when tapped: exact coordinates when the shop location is known, otherwise a map search by the shop name and place.
+
+Website visits: one count per browser per day, stored without name, phone or IP. The admin sees the day, visits, people and a short anonymous visitor code in the Visits tab.
+
+Visits tab: total people and total visits, people by city (nearest known city, from the visitor location if allowed, otherwise Unknown), and the daily list. No name, phone or coordinates are stored.
+
+Users and bookers (phase 2): admin creates a user or order booker with a numeric ID and a 6 to 12 character password, assigns shops to bookers, and approves or rejects phone, address and GPS location changes.
+
+Order booker login (phase 3): the booker picks Order Booker on the role screen, logs in with the numeric ID and password the admin gave, and sees the shops assigned to them. The booking screen comes next.
+
+Booker booking screen (phase 4): the booker books an order for an assigned shop, or for any shop as Unplanned. Needs server/booker_orders.sql to be run once in the Supabase SQL Editor.
+
+Booker app: open the link with #booker, then install. Login header and banners use a safe tagline (no health claim).
+
+Links tab in admin: customer, booker, user, admin and website links, built from the current address (works on GitHub Pages, Netlify and others).
+
+Booker: the #booker link opens the Order Booker login (numeric ID and password, no phone number), and the booker screens use dark blue.
+
+Booker (phase 5): same rates, bundles, free bottles, offers and token tiers as the shopkeeper; discount and tokens of the chosen shop; booking page first; New shop and Edit shop requests are under Menu and go to admin approval (aab_shop_req). Run server SQL aab_booker_shop_info and aab_booker_shop_req (applied).
+
+Final set: booker logout and password change (menu and top bar), admin approval of booker new/edit shop requests, admin password reset for users and bookers. Shop approved as new is active in the booker account with no password until the shopkeeper sets one.
+
+Order booker: the menu bar is at the top of the booker screen (Booking, New shop, Edit shop, Password, Log out), like the user menu.
+
+Order booker: new products show on the booking screen; the order summary shows bottles, bundles, discount, total, free bottles and the minimum like the shopkeeper.
+
+Order booker: bottle and bundle steppers like the shopkeeper; tokens to use on the order.
+
+Order screens (shopkeeper and order booker): when bundles are on, only the bundle stepper shows; the bottle count follows the bundles.
+
+v11.06: booker app (login, booking with tokens, bundles, products, new/edit shop requests, password change, logout), admin Users & Bookers tab (create, assign, approve shop requests, password reset), Links tab, bundles-only order screens, safe login tagline.
+
+Booker: the chosen assigned shop stays selected after the screen redraws.
+
+Booker colour changed to purple, to be different from the shopkeeper and admin screens.
+
+Booker: claims are filed from the booker Claim tab (shop, reason, bottles, note, photo). Days: admin ticks the working days of each shop (Mon to Sun); the booker sees only the shops open on the chosen day and can book only on the shop working day (today). Outlet/phone choice and tokens removed from the booker order form.
+
+Login look: blue top from light to dark with a curved bottom, logo in a circle, white sheet sliding up, rounded fields and a big blue button. Applied only when nobody is logged in.
+
+Login: white top with the logo, a curved band in the role colour, white card. Booker: the top buttons are in a 3-line menu.
+
+Booker home screen after login: gradient header with menu, avatar, rows for user ID, name, designation, shops assigned and day, and a Start booking button.
+
+Booker: one menu only (the 3-line button in the top bar); the small logo sits at the top left; the big header block on the home screen is removed.
+
+Booker app in the reference format: one header with the drawer menu; Home with a Today card (assigned outlets, outlets today, orders today, bottles, amount, pending) and three big buttons (Outlets, Booking, Reports); Outlets with Su-to-Sat day tabs, Active/Off status and a direction button (no phone numbers); Reports with Summary and Order list. Needs server/booker_shops_info.sql run once for names.
+
+Booking screen like the reference: day tabs (Su to All), search, outlet list with Active and direction, tap an outlet to open the order screen (bottles and bundles, summary, discount, address, Book). Outlets screen is the same list.
+
+Booker outlet list and order screen show shopkeeper ID, name, owner, phone, location (area, city and GPS point).
+
+Booker after login: the large logo header block is hidden; the small top bar is the only header.
+
+Fix: the shopkeeper order quantity field is always present (hidden when bundles are on), so orders place again.
+
+Print: each slip shows Booked by (booker ID and name, or the shopkeeper ID and name). Every print ends with Printed by: the logged-in user ID and name.
+
+Print: Booked by and Printed by show only the name (no ID).
+
+Login screen: fits the phone screen without scrolling.
+
+Booker home KPIs: today (outlets, on duty, orders, bottles, amount), coverage ring (outlets booked today), this month (orders, bottles, amount, delivered, pending).
+
+Fixed: booking screens (outlet list, outlet order, reports) had been removed by a home-screen edit, so the booker could not act; restored. Tagline removed; booker dark light red; shopkeeper light blue; booking day tab opens on today.
+
+Admin shop days: saved as 1,3,5 and the real error shows if it fails. Login: one look from the three references (white top with logo, wave, coloured band, white card, full-width button).
+
+Login in three screens: welcome (Login / Register), then the form, then the existing welcome after sign in. Dark gradient look.
+
+Booker: no red inside the cards (dark blue and light blue instead, cards white). Outlet cards are rounded with a blue side bar and bigger text.
+
+Booker: white background, light blue and light yellow accents, cards white.
+
+Booker home: six steps like the guide: login, sync, start day (check in / check out), outlets, orders, performance. Check-in is kept on the phone for the day.
+
+Attendance saved on the server (check in and out). Admin sees the team: each booker attendance (last 14 days), and today orders, bottles and amount.
+
+Booker home follows the reference: light blue ring at top, Today card with the same row names, and Outlets, Booking, Reports buttons. Check in removed from the home screen.
+
+Booker colour: dark blue top bar and accents, white cards.
+
+Booker outlets: green when booked today, red when closed today, grey when off, white when open. Open or close shop button on the order screen.
+
+Final check: every database function the app calls exists; every button function is defined; all scripts and JSON files parse.
+
+Booked shop cannot be closed for the day; close button shows a message. All entered data cleared (kept: admin and user accounts and settings). Backup in aab_backup_20261116.
+
+Login fits one phone screen with no scrolling; version shown at the bottom.
