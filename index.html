@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aab-e-Khizri</title>
+<style>
+:root { box-sizing: border-box; padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); }
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; font-family: system-ui, sans-serif; background: #111827; color: #ffffff; }
+.wrap { max-width: 400px; margin: 0 auto; padding: 16px; }
+.hidden { display: none !important; }
+.card { background: #1f2a3a; border: 1.5px solid #c9a86a; border-radius: 14px; padding: 18px; margin-top: 14px; }
+.logo { width: 90px; height: 90px; border-radius: 50%; object-fit: contain; background: #ffffff; display: block; margin: 8px auto 12px; }
+h1 { font-size: 17px; font-weight: 500; text-align: center; margin: 0 0 14px; letter-spacing: 1px; }
+label { display: block; font-size: 12px; color: #cfd8e3; margin: 10px 0 4px; }
+input { width: 100%; background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.25); border-radius: 10px; padding: 10px 12px; color: #ffffff; font-size: 14px; outline: none; }
+input::placeholder { color: #8a96a6; }
+.btn { width: 100%; background: #1e3a6e; color: #ffffff; border: 1px solid #c9a86a; border-radius: 999px; padding: 11px; font-size: 14px; font-weight: 500; margin-top: 14px; cursor: pointer; }
+.btn.ghost { background: transparent; }
+.link { color: #e8d7b0; font-size: 12px; text-align: center; margin-top: 12px; cursor: pointer; text-decoration: underline; display: block; }
+.msg { font-size: 12px; text-align: center; margin-top: 10px; min-height: 16px; color: #f8a5a5; }
+.msg.ok { color: #9be7a6; }
+.role-btn { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 12px 14px; margin-top: 10px; cursor: pointer; font-size: 14px; }
+.role-tag { font-size: 11px; padding: 4px 10px; border-radius: 999px; color: #ffffff; }
+.topbar { background: #1e3a6e; border: 1.5px solid #c9a86a; border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; }
+.topbar .who { font-size: 14px; font-weight: 500; }
+.topbar .des { font-size: 11px; color: #e8d7b0; }
+.pill-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.pill { background: #1e3a6e; color: #ffffff; border: 1px solid #c9a86a; border-radius: 999px; padding: 8px 12px; font-size: 12px; cursor: pointer; }
+.pill.active { background: #c9a86a; color: #111827; }
+.list-item { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 10px 12px; margin-top: 8px; font-size: 13px; color: #cfd8e3; }
+.small { font-size: 12px; color: #cfd8e3; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ROLE SELECT -->
+  <section id="screenRoles">
+    <div class="card">
+      <img class="logo" src="logo.png" alt="Aab-e-Khizri logo">
+      <h1>SELECT YOUR ROLE</h1>
+      <div class="role-btn" data-role="admin"><span>ADMIN (ایڈمن)</span><span class="role-tag" style="background:#1e3a6e">Login</span></div>
+      <div class="role-btn" data-role="user"><span>USER (صارف)</span><span class="role-tag" style="background:#5b3a8c">Login</span></div>
+      <div class="role-btn" data-role="employer"><span>EMPLOYER (آجر)</span><span class="role-tag" style="background:#2e6b3e">Login</span></div>
+      <div class="role-btn" data-role="order_booker"><span>ORDER BOOKER (آرڈر بک)</span><span class="role-tag" style="background:#b3261e">Login</span></div>
+      <div class="role-btn" data-role="shopkeeper"><span>SHOPKEEPER (دکاندار)</span><span class="role-tag" style="background:#b3261e">Login</span></div>
+    </div>
+  </section>
+
+  <!-- LOGIN -->
+  <section id="screenLogin" class="hidden">
+    <div class="card">
+      <div id="roleLetter" style="text-align:center; font-size:22px; font-weight:500; color:#e8d7b0; min-height:28px; letter-spacing:2px;"></div>
+      <img class="logo" src="logo.png" alt="Aab-e-Khizri logo">
+      <h1 id="loginTitle">LOGIN</h1>
+      <label id="idLabel" for="loginId">ID</label>
+      <input id="loginId" type="text" placeholder="ID">
+      <label for="loginPass">Password</label>
+      <input id="loginPass" type="password" placeholder="Password">
+      <button class="btn" id="loginBtn">Login</button>
+      <a class="link" id="forgotLink">Forgot Password?</a>
+      <a class="link" id="backRoles1">Wapas role selection par jayein</a>
+      <div class="msg" id="loginMsg"></div>
+    </div>
+  </section>
+
+  <!-- FORGOT PASSWORD -->
+  <section id="screenForgot" class="hidden">
+    <div class="card">
+      <h1>FORGOT PASSWORD</h1>
+      <label id="forgotIdLabel" for="forgotId">ID</label>
+      <input id="forgotId" type="text" placeholder="ID">
+      <label>Naya password</label>
+      <input id="forgotNew" type="password" placeholder="Naya password">
+      <button class="btn" id="forgotBtn">Password reset karein</button>
+      <a class="link" id="backLogin1">Login par wapas</a>
+      <div class="msg" id="forgotMsg"></div>
+    </div>
+  </section>
+
+  <!-- HOME (after login) -->
+  <section id="screenHome" class="hidden">
+    <div class="topbar">
+      <div>
+        <div class="who" id="homeName">Name</div>
+        <div class="des" id="homeId">ID</div>
+        <div class="des" id="homeDes">Designation</div>
+      </div>
+      <button class="btn ghost" id="homeMenuBtn" style="width:auto; margin:0; padding:6px 12px;">Menu</button>
+    </div>
+    <div class="pill-row" id="pillRow"></div>
+    <div class="card" id="homeContent"></div>
+    <div id="menuPanel" class="card hidden">
+      <div class="list-item" data-act="change">Password badlein</div>
+      <div class="list-item" data-act="logout">Logout</div>
+    </div>
+  </section>
+
+  <!-- CHANGE PASSWORD -->
+  <section id="screenChange" class="hidden">
+    <div class="card">
+      <h1>PASSWORD BADLEIN</h1>
+      <label for="oldPass">Purana password</label>
+      <input id="oldPass" type="password">
+      <label for="newPass">Naya password</label>
+      <input id="newPass" type="password">
+      <button class="btn" id="changeBtn">Save</button>
+      <a class="link" id="backHome">Wapas</a>
+      <div class="msg" id="changeMsg"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/*
+  DEMO MODE. Supabase is not connected yet.
+  Next step: replace DEMO_USERS checks with Supabase Auth calls.
+  Demo accounts (remove before going live):
+  admin001/admin123, user001/user123, emp001/emp123, booker001/book123, shop 03001234567/shop123
+*/
+const DEMO_USERS = {
+  admin:        [{ key: "admin001", pass: "admin123", name: "Admin", des: "Admin" }],
+  user:         [{ key: "user001", pass: "user123", name: "User", des: "User" }],
+  employer:     [{ key: "emp001", pass: "emp123", name: "Employer", des: "Employer" }],
+  order_booker: [{ key: "booker001", pass: "book123", name: "Order Booker", des: "Order Booker" }],
+  shopkeeper:   [{ key: "03001234567", pass: "shop123", name: "Shopkeeper", des: "Shopkeeper" }]
+};
+
+const PILLS = {
+  admin: ["Approval", "Registration", "Dispatch", "Review", "Sales", "Discounts aur Promos", "Tokens (Noor Coins)", "Khizr Rewards", "Users aur IDs", "Products", "Account Number", "Reports"],
+  user: ["Shopkeeper Orders", "Outlets", "Dispatch Status", "My Orders"],
+  employer: ["Shopkeeper Orders", "Dispatch", "Printing", "Shipping Status"],
+  order_booker: ["Order Place", "Shop Register", "Attendance", "KPIs", "Outlets"],
+  shopkeeper: ["Order", "My Orders", "Tokens", "Shop Register", "Products"]
+};
+
+const ROLE_LABEL = { admin: "Admin", user: "User", employer: "Employer", order_booker: "Order Booker", shopkeeper: "Shopkeeper" };
+
+let currentRole = null;
+let currentUser = null;
+
+const $ = id => document.getElementById(id);
+function show(id) {
+  ["screenRoles","screenLogin","screenForgot","screenHome","screenChange"].forEach(s => $(s).classList.add("hidden"));
+  $(id).classList.remove("hidden");
+  window.scrollTo(0, 0);
+}
+function setMsg(el, text, ok) { el.textContent = text; el.className = "msg" + (ok ? " ok" : ""); }
+
+// ROLE SELECT
+document.querySelectorAll(".role-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    currentRole = btn.dataset.role;
+    const isShop = currentRole === "shopkeeper";
+    $("loginTitle").textContent = ROLE_LABEL[currentRole].toUpperCase() + " LOGIN";
+    const LETTERS = { admin: "A", user: "U", employer: "E", order_booker: "", shopkeeper: "" };
+    $("roleLetter").textContent = LETTERS[currentRole];
+    $("idLabel").textContent = isShop ? "Mobile number" : "ID";
+    $("loginId").placeholder = isShop ? "Mobile number" : "ID";
+    $("forgotIdLabel").textContent = isShop ? "Mobile number" : "ID";
+    $("loginId").value = "";
+    $("loginPass").value = "";
+    setMsg($("loginMsg"), "");
+    show("screenLogin");
+  });
+});
+
+$("backRoles1").addEventListener("click", () => show("screenRoles"));
+$("forgotLink").addEventListener("click", () => { $("forgotId").value = ""; $("forgotNew").value = ""; setMsg($("forgotMsg"), ""); show("screenForgot"); });
+$("backLogin1").addEventListener("click", () => show("screenLogin"));
+
+// LOGIN
+$("loginBtn").addEventListener("click", () => {
+  const id = $("loginId").value.trim();
+  const pass = $("loginPass").value;
+  const found = (DEMO_USERS[currentRole] || []).find(u => u.key === id && u.pass === pass);
+  if (!found) { setMsg($("loginMsg"), "ID ya password galat hai"); return; }
+  currentUser = found;
+  openHome();
+});
+
+// FORGOT PASSWORD: request goes to admin approval, no SMS
+const RESET_REQUESTS = [];
+$("forgotBtn").addEventListener("click", () => {
+  const id = $("forgotId").value.trim();
+  const np = $("forgotNew").value;
+  const found = (DEMO_USERS[currentRole] || []).find(u => u.key === id);
+  if (!found) { setMsg($("forgotMsg"), "Ye ID mili nahi"); return; }
+  if (np.length < 6) { setMsg($("forgotMsg"), "Password kam az kam 6 characters ka ho"); return; }
+  RESET_REQUESTS.push({ role: currentRole, user: found, newPass: np, status: "pending" });
+  setMsg($("forgotMsg"), "Request admin ko bheji gayi hai. Approval ke baad login kar sakte hain.", true);
+});
+
+// HOME
+function openHome() {
+  $("homeName").textContent = currentUser.name;
+  $("homeId").textContent = "ID: " + currentUser.key;
+  $("homeDes").textContent = "Designation: " + currentUser.des;
+  const row = $("pillRow");
+  row.textContent = "";
+  PILLS[currentRole].forEach((label, i) => {
+    const p = document.createElement("div");
+    p.className = "pill" + (i === 0 ? " active" : "");
+    p.textContent = label;
+    p.addEventListener("click", () => {
+      row.querySelectorAll(".pill").forEach(x => x.classList.remove("active"));
+      p.classList.add("active");
+      renderSection(label);
+    });
+    row.appendChild(p);
+  });
+  renderSection(PILLS[currentRole][0]);
+  $("menuPanel").classList.add("hidden");
+  show("screenHome");
+}
+
+function renderSection(label) {
+  const box = $("homeContent");
+  box.textContent = "";
+  if (currentRole === "admin" && label === "Approval") {
+    const title = document.createElement("p");
+    title.style.margin = "0 0 6px";
+    title.style.color = "#ffffff";
+    title.textContent = "Password reset requests";
+    box.appendChild(title);
+    const pending = RESET_REQUESTS.filter(r => r.status === "pending");
+    if (pending.length === 0) {
+      const none = document.createElement("div");
+      none.className = "small";
+      none.textContent = "Abhi koi request nahi hai.";
+      box.appendChild(none);
+      return;
+    }
+    pending.forEach(r => {
+      const item = document.createElement("div");
+      item.className = "list-item";
+      item.textContent = ROLE_LABEL[r.role] + " | ID: " + r.user.key + " | Naam: " + r.user.name;
+      const ok = document.createElement("button");
+      ok.className = "btn";
+      ok.textContent = "Approve";
+      ok.addEventListener("click", () => {
+        r.user.pass = r.newPass;
+        r.status = "approved";
+        renderSection("Approval");
+      });
+      const no = document.createElement("button");
+      no.className = "btn ghost";
+      no.textContent = "Reject";
+      no.addEventListener("click", () => {
+        r.status = "rejected";
+        renderSection("Approval");
+      });
+      item.appendChild(ok);
+      item.appendChild(no);
+      box.appendChild(item);
+    });
+    return;
+  }
+  box.textContent = label + " section (abhi khali hai, next step mein banega).";
+}
+
+$("homeMenuBtn").addEventListener("click", () => $("menuPanel").classList.toggle("hidden"));
+$("menuPanel").addEventListener("click", e => {
+  const act = e.target.dataset.act;
+  if (act === "logout") { currentUser = null; show("screenRoles"); }
+  if (act === "change") { $("oldPass").value = ""; $("newPass").value = ""; setMsg($("changeMsg"), ""); show("screenChange"); }
+});
+$("backHome").addEventListener("click", () => openHome());
+
+// CHANGE PASSWORD
+$("changeBtn").addEventListener("click", () => {
+  const oldP = $("oldPass").value;
+  const newP = $("newPass").value;
+  if (oldP !== currentUser.pass) { setMsg($("changeMsg"), "Purana password galat hai"); return; }
+  if (newP.length < 6) { setMsg($("changeMsg"), "Naya password kam az kam 6 characters ka ho"); return; }
+  currentUser.pass = newP;
+  setMsg($("changeMsg"), "Password badal gaya.", true);
+});
+</script>
+</body>
+</html>

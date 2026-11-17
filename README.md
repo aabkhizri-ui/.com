@@ -13,6 +13,16 @@
 - Order Booker: booker001 / book123
 - Shopkeeper: 03001234567 / shop123
 
+## Forgot password
+No SMS. User submits a new password from the Forgot Password screen; the request goes to Admin > Approval. Admin approves (password changes) or rejects.
+
+## Login letters (login screen)
+Admin = A, User = U, Employer = E. Order Booker and Shopkeeper have no letter.
+
+## Policies
+- policies_review.html: open in browser, approve or reject each role's rules.
+- policies_draft.sql: DRAFT ONLY, not applied. Needs Supabase Auth login link first.
+
 ## Not done yet
 - Supabase connection (Auth, forgot password by email/SMS, real data).
 - Row Level Security policies per role.
